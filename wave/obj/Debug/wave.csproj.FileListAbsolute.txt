@@ -1,0 +1,18 @@
+c:\users\kaidi\documents\visual studio 2017\Projects\wave\wave\bin\Debug\wave.exe.config
+c:\users\kaidi\documents\visual studio 2017\Projects\wave\wave\bin\Debug\wave.exe
+c:\users\kaidi\documents\visual studio 2017\Projects\wave\wave\bin\Debug\wave.pdb
+c:\users\kaidi\documents\visual studio 2017\Projects\wave\wave\obj\Debug\wave.csprojResolveAssemblyReference.cache
+c:\users\kaidi\documents\visual studio 2017\Projects\wave\wave\obj\Debug\wave.Form1.resources
+c:\users\kaidi\documents\visual studio 2017\Projects\wave\wave\obj\Debug\wave.Properties.Resources.resources
+c:\users\kaidi\documents\visual studio 2017\Projects\wave\wave\obj\Debug\wave.csproj.GenerateResource.Cache
+c:\users\kaidi\documents\visual studio 2017\Projects\wave\wave\obj\Debug\wave.exe
+c:\users\kaidi\documents\visual studio 2017\Projects\wave\wave\obj\Debug\wave.pdb
+C:\Users\kaidi\Documents\GitHub\dbfansub-checkingMachine\wave\bin\Debug\wave.exe.config
+C:\Users\kaidi\Documents\GitHub\dbfansub-checkingMachine\wave\bin\Debug\wave.exe
+C:\Users\kaidi\Documents\GitHub\dbfansub-checkingMachine\wave\bin\Debug\wave.pdb
+C:\Users\kaidi\Documents\GitHub\dbfansub-checkingMachine\wave\obj\Debug\wave.csprojResolveAssemblyReference.cache
+C:\Users\kaidi\Documents\GitHub\dbfansub-checkingMachine\wave\obj\Debug\wave.Form1.resources
+C:\Users\kaidi\Documents\GitHub\dbfansub-checkingMachine\wave\obj\Debug\wave.Properties.Resources.resources
+C:\Users\kaidi\Documents\GitHub\dbfansub-checkingMachine\wave\obj\Debug\wave.csproj.GenerateResource.Cache
+C:\Users\kaidi\Documents\GitHub\dbfansub-checkingMachine\wave\obj\Debug\wave.exe
+C:\Users\kaidi\Documents\GitHub\dbfansub-checkingMachine\wave\obj\Debug\wave.pdb

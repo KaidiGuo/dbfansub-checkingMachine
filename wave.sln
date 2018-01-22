@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wave", "wave\wave.csproj", "{C3A8ADF1-EDC8-43AC-A4E8-AE893B30C3AD}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "电波字幕组格式检查器", "电波字幕组格式检查器\电波字幕组格式检查器.vdproj", "{3E8FAA5F-3A04-48CC-B3D8-7BE9F2367B92}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C3A8ADF1-EDC8-43AC-A4E8-AE893B30C3AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3A8ADF1-EDC8-43AC-A4E8-AE893B30C3AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3A8ADF1-EDC8-43AC-A4E8-AE893B30C3AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3A8ADF1-EDC8-43AC-A4E8-AE893B30C3AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E8FAA5F-3A04-48CC-B3D8-7BE9F2367B92}.Debug|Any CPU.ActiveCfg = Debug
+		{3E8FAA5F-3A04-48CC-B3D8-7BE9F2367B92}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
