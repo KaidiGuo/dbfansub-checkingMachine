@@ -21,18 +21,23 @@ namespace wave
         public Form1()
         {
             InitializeComponent();
-            Text2.Visible = false;
 
-            TextBox myText = new TextBox();
-            myText.Location = new Point(765, 147);
-            this.Controls.Add(myText);
+            savefile.Visible = false;
+           
 
 
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-           
+            //CheckBox chb = new CheckBox();
+            //chb.Name = "checkbox"; //设置按钮文字
+            //chb.Text = "number";
+            //chb.Location = new Point(400, 70); //设置他的坐标
+            //chb.AutoCheck = true;
+            //panel1.Controls.Add(chb); //把btn对象添加到该窗体的控件集合内
+
+            
 
 
         }
@@ -115,7 +120,9 @@ namespace wave
             //存储检查结果的列表
             List<string> modifiedline = new List<string>();
             //存储修改建议的列表
-            ArrayList suggestionline = new ArrayList();
+            List<List<string>> suggestionline = new List<List<string>>();
+            //List<string> suggestionline = new List<string>();
+            
             int linenumber = 0;
             while ((line = sr.ReadLine()) != null)
             {   
@@ -130,8 +137,9 @@ namespace wave
                 //检查结果
                 string modified=line;
                 //修改建议
-                string suggestion = "";
+                string suggestion = line;
 
+                //当加入了空格或删除后，后面字符的index会变化，因此用count进行调整
                 int count = 0;
 
                 //跳过数字行，轴行和空格行
@@ -143,14 +151,14 @@ namespace wave
                 //在这里添加需要检查的符号
                 if (line.Contains('“'))//中文引号“” 英文引号""
                 {
-                    suggestion = line.Replace('“', '"');
-                    modified = suggestion + "【中文引号】";
+                    suggestion = suggestion.Replace('“', '"');
+                    modified = line + "【中文引号】";
                    
                 }
                 if (line.Contains('”'))
                 {
-                    suggestion = line.Replace('”', '"');
-                    modified = suggestion + "【中文引号】";
+                    suggestion = suggestion.Replace('”', '"');
+                    modified = line + "【中文引号】";
                 }
 
                 try {
@@ -165,31 +173,33 @@ namespace wave
                         {
                             if(line[i+1]!= ' ')
                             {
-                                suggestion = line.Insert((i + 1 + count), " ");
-                                modified = suggestion+ "【少空格】";
+                                suggestion = suggestion.Insert((i + 1 + count), " ");
+                                modified = line+ "【少】";
                                 count += 1;
                                 Console.Write("句首，缺空格，在后加一个空格");
                                 Console.WriteLine("index="+i);
                             }
                             if (line[i + 2] == ' ')
                             {
-                                suggestion = line.Remove(i + 1, 1);
-                                modified = suggestion + "【多空格】";
-                                count += -1;
+                                suggestion = suggestion.Remove(i + 1 + count, 1);
+                                modified = line + "【多】";
+                                count -= 1;
                                 Console.Write("句首，多空格，在后删除一个空格");
                                 Console.WriteLine("index=" + i);
                             }
                         }
+                        
                         else if(i==1 && line[0] == ' ')
                         {
-                            suggestion = line.Remove(0, 1);
-                            modified = suggestion + "【多空格】";
+                            suggestion = suggestion.Remove(0, 1);
+                            modified = line + "【多】";
                             count -= 1;
                             Console.Write("句首多一个空格，删除");
                             Console.WriteLine("index=" + i);
 
                         }
-                        else//不在句首
+                        //不在句首
+                        else
                         {
                             //中文行
                             if ((linenumber - 3) % 5 == 0)
@@ -201,28 +211,34 @@ namespace wave
                                 }
                                 if (line[i - 1] != ' ')
                                 {
-                                    suggestion = line.Insert((i + count), " ");
-                                    modified = suggestion + "【少空格】";
+                                    suggestion = suggestion.Insert((i  + count), " ");
+                                    modified = line + "【前少】";
                                     count += 1;
                                     Console.Write("前1缺空格，前1加空格");
-                                    Console.WriteLine("index" + i);
-                                }
+                                    Console.WriteLine("原始" + line);
+                                    Console.WriteLine("修改" + suggestion);
+                                    Console.WriteLine("提示" + modified);
+                                    }
                                 if (line[i - 2] != ' ')
                                 {
-                                    suggestion = line.Insert((i + count), " ");
-                                    modified = suggestion + "【少空格】";
+                                    suggestion = suggestion.Insert((i -1 + count), " ");
+                                    modified = line + "【前少】";
                                     count += 1;
                                     Console.Write("前2缺空格，前2加空格");
-                                    Console.WriteLine("index" + i);
-                                }
+                                        Console.WriteLine("原始" + line);
+                                        Console.WriteLine("修改" + suggestion);
+                                        Console.WriteLine("提示" + modified);
+                                    }
                                 if (line[i + 1] != ' ')
                                 {
-                                    suggestion = line.Insert((i + 1 + count), " ");
-                                    modified = suggestion + "【少空格】";
+                                    suggestion = suggestion.Insert((i + 1 + count), " ");
+                                    modified = line + "【后少】";
                                     count += 1;
                                     Console.Write("后1少空格，后1加空格");
-                                    Console.WriteLine("index" + i);
-                                }
+                                        Console.WriteLine("原始" + line);
+                                        Console.WriteLine("修改" + suggestion);
+                                        Console.WriteLine("提示" + modified);
+                                    }
 
                             }
                             else//英文行
@@ -234,37 +250,45 @@ namespace wave
                                 }
                                 if (line[i - 1] != ' ')
                                 {
-                                    suggestion = line.Insert((i + count), " ");
-                                    modified = suggestion + "【少空格】";
+                                    suggestion = suggestion.Insert((i + count), " ");
+                                    modified = line + "【前少】";
                                     count += 1;
                                     Console.Write("前面缺空格，前面加一个空格");
-                                    Console.WriteLine("index" + i);
-                                }
+                                        Console.WriteLine("原始" + line);
+                                        Console.WriteLine("修改" + suggestion);
+                                        Console.WriteLine("提示" + modified);
+                                    }
                                 if (line[i + 1] != ' ')
                                 {
 
-                                    suggestion = line.Insert((i + 1 + count), " ");
-                                    modified = suggestion + "【少空格】";
+                                    suggestion = suggestion.Insert((i + 1 + count), " ");
+                                    modified = line + "【后少】";
                                     count += 1;
                                     Console.Write("后面少空格，后面加一个空格");
-                                    Console.WriteLine("index" + i);
-                                }
+                                        Console.WriteLine("原始" + line);
+                                        Console.WriteLine("修改" + suggestion);
+                                        Console.WriteLine("提示" + modified);
+                                    }
                                 if (line[i - 2] == ' ')
                                 {
-                                    suggestion = line.Remove(i - 1, 1);
-                                    modified = suggestion + "【多空格】";
+                                    suggestion = suggestion.Remove(i - 1, 1);
+                                    modified = line + "【前多】";
                                     count -= 1;
                                     Console.Write("前1多空格，删除一个空格");
-                                    Console.WriteLine("index" + i+ "line"+linenumber);
-                                }
+                                        Console.WriteLine("原始" + line);
+                                        Console.WriteLine("修改" + suggestion);
+                                        Console.WriteLine("提示" + modified);
+                                    }
                                 if (line[i + 2] == ' ')
                                 {
-                                    suggestion = line.Remove(i + 1, 1);
-                                    modified = suggestion + "【多空格】";
+                                    suggestion = suggestion.Remove(i + 1, 1);
+                                    modified = line + "【后多】";
                                     count -= 1;
                                     Console.Write("后1多空格，删除一个空格");
-                                    Console.WriteLine("index" + i + "line" + linenumber);
-                                }
+                                        Console.WriteLine("原始" + line);
+                                        Console.WriteLine("修改" + suggestion);
+                                        Console.WriteLine("提示" + modified);
+                                    }
 
                             }
 
@@ -274,7 +298,7 @@ namespace wave
                     }
                 }
                 }
-                catch(System.IndexOutOfRangeException e)
+                catch(IndexOutOfRangeException)
                 {
                     //如果出现意外情况请求人工核查， 输出原句
                     suggestion = line;
@@ -285,15 +309,15 @@ namespace wave
 
                 int srtnumber = 1 + linenumber / 5;
                 if (line != modified) {
-                    wrongline.Add("文本第"+linenumber+ "行，字幕第"+srtnumber+"句:" + line);
+                    wrongline.Add("文本第"+linenumber+ "行，字幕第"+srtnumber+"句:" + modified);
                     modifiedline.Add(modified);
 
-                    ArrayList choice = new ArrayList();
+                    List<string> choice = new List<string>();
                     choice.Add(suggestion);
-                    choice.Add(false);
-                    choice.Add(linenumber-1);
+                    choice.Add("true");
+                    choice.Add((linenumber-1).ToString());
                                                            
-                    suggestionline.AddRange(choice);
+                    suggestionline.Add(choice);
                     //Console.Write("XXXXXX: "+choice[0] + choice[1] + choice[2]);
 
 
@@ -304,7 +328,22 @@ namespace wave
             string combine_modifiedline = string.Join("\r\n\r\n", modifiedline.ToArray());
             Text1.Text = combine_wrongline;
 
+          
+            int checkboxnumber = suggestionline.Count();
             
+            for (int i = 0; i < checkboxnumber; i++)
+            {
+                CheckBox cb = new CheckBox();
+                cb.Text = suggestionline[i][0];
+                cb.Location = new Point(5, 5 + i * 24);
+                cb.BackColor = Color.White;
+                cb.Name = "checkbox"+i;
+                cb.AutoSize = true;
+                cb.Checked = true;
+                panel1.Controls.Add(cb);
+            }
+
+
 
             //Console.Write("ssssss: "+suggestionline[0]);
 
@@ -314,7 +353,7 @@ namespace wave
 
 
         }
-
+        
         //选择文件
         private void Open_click(object sender, EventArgs e)
         {
@@ -366,8 +405,9 @@ namespace wave
 
         }
 
-        
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
 
-       
+        }
     }
 }
