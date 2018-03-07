@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Mail;
-
+using System.IO;
 
 /**电波字幕组，字幕格式检查器
  * created by LSD猴子**/
@@ -40,6 +40,13 @@ namespace wave
             
 
 
+        }
+
+        public class Myclass
+        {
+            public static String origionname = "";
+            public static List<string> thissubfile = new List<string>();
+            public static List<List<string>> suggestionline = new List<List<string>>();
         }
 
         //检查是否有空行和多行
@@ -102,6 +109,8 @@ namespace wave
             }
         }
 
+        CheckBox cb = new CheckBox();
+
         //确定Read1检查通过 开始逐行检查符号
         public void Read2(string path, int totalline)
         { 
@@ -120,12 +129,13 @@ namespace wave
             //存储检查结果的列表
             List<string> modifiedline = new List<string>();
             //存储修改建议的列表
-            List<List<string>> suggestionline = new List<List<string>>();
+            //List<List<string>> suggestionline = new List<List<string>>();
             //List<string> suggestionline = new List<string>();
             
             int linenumber = 0;
             while ((line = sr.ReadLine()) != null)
-            {   
+            {
+                Myclass.thissubfile.Add(line);
                 //计算进度条进度
                 progressBar1.PerformStep();
 
@@ -169,19 +179,24 @@ namespace wave
                         
                     if ( this_character == '-')
                     {
-                        if (i==0)//如果-在句首的情况，只考虑其后
+                        //如果-在句首的情况，只考虑其后
+                        if (i==0)
                         {
-                            if(line[i+1]!= ' ')
+                            if(line[1]!= ' ')
                             {
                                 suggestion = suggestion.Insert((i + 1 + count), " ");
                                 modified = line+ "【少】";
                                 count += 1;
                                 Console.Write("句首，缺空格，在后加一个空格");
-                                Console.WriteLine("index="+i);
+                                Console.WriteLine("new: "+ suggestion);
+                                    
+
+
+                                    Console.WriteLine("index="+i);
                             }
-                            if (line[i + 2] == ' ')
+                            if (suggestion[2] == ' ')
                             {
-                                suggestion = suggestion.Remove(i + 1 + count, 1);
+                                suggestion = suggestion.Remove( 1 + count, 1);
                                 modified = line + "【多】";
                                 count -= 1;
                                 Console.Write("句首，多空格，在后删除一个空格");
@@ -201,11 +216,14 @@ namespace wave
                         //不在句首
                         else
                         {
-                            //中文行
-                            if ((linenumber - 3) % 5 == 0)
+                                Console.WriteLine("into else: " + suggestion);
+                                Console.WriteLine("current i: " + suggestion[i]);
+
+                                //中文行
+                                if ((linenumber - 3) % 5 == 0)
                             {
                                 //破折号前后都没空格，应为词中连接线，忽略
-                                if (line[i - 1] != ' ' && line[i + 1] != ' ')
+                                if (line[i - 1] != ' ' && suggestion[i + 1] != ' ')
                                 {
                                     break;
                                 }
@@ -241,11 +259,15 @@ namespace wave
                                     }
 
                             }
-                            else//英文行
-                            {
+                                //英文行
+                                else
+                                {
                                 //破折号前后都没空格，应为词中连接线，忽略
                                 if (line[i - 1]!= ' '&& line[i + 1] != ' ')
                                 {
+
+                                        Console.WriteLine("qian " + suggestion[i - 1]);
+                                        Console.WriteLine("hou " + suggestion[i + 1]);
                                         break;
                                 }
                                 if (line[i - 1] != ' ')
@@ -317,7 +339,7 @@ namespace wave
                     choice.Add("true");
                     choice.Add((linenumber-1).ToString());
                                                            
-                    suggestionline.Add(choice);
+                    Myclass.suggestionline.Add(choice);
                     //Console.Write("XXXXXX: "+choice[0] + choice[1] + choice[2]);
 
 
@@ -329,85 +351,127 @@ namespace wave
             Text1.Text = combine_wrongline;
 
           
-            int checkboxnumber = suggestionline.Count();
+            int checkboxnumber = Myclass.suggestionline.Count();
             
             for (int i = 0; i < checkboxnumber; i++)
             {
-                CheckBox cb = new CheckBox();
-                cb.Text = suggestionline[i][0];
+                cb = new CheckBox();
+                cb.Text = Myclass.suggestionline[i][0];
                 cb.Location = new Point(5, 5 + i * 24);
                 cb.BackColor = Color.White;
-                cb.Name = "checkbox"+i;
+                cb.Name = i + "checkbox";
                 cb.AutoSize = true;
                 cb.Checked = true;
+                cb.CheckedChanged += new EventHandler(CheckedChanged);
                 panel1.Controls.Add(cb);
+            };
+
+            savefile.Visible = true;
+
+            
+
+       
+
+
+
+
             }
 
+        private void CheckedChanged(object sender, EventArgs e)
+        {
+            //通过sender得到具体哪个checkbox被触发
+            CheckBox cb = sender as CheckBox;
+            if (!cb.Checked)
+            {
+                String thisname = cb.Name.Replace("checkbox", "");
+                int thisindex = Int32.Parse(thisname);
+                Myclass.suggestionline[thisindex][1] = "false";
+                Console.WriteLine(cb.Text +" unchecked");
 
+            }
+            if (cb.Checked)
+            {
+                String thisname = cb.Name.Replace("checkbox", "");
+                int thisindex = Int32.Parse(thisname);
+                Myclass.suggestionline[thisindex][1] = "true";
+                Console.WriteLine(cb.Text + " checked");
 
-            //Console.Write("ssssss: "+suggestionline[0]);
-
-
-            //Text2.Text = combine_modifiedline;
-
-
-
+            }
         }
-        
+
+
         //选择文件
         private void Open_click(object sender, EventArgs e)
         {
             
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
-
             openFileDialog.Multiselect = true;
-
             //文件格式
-
             openFileDialog.Filter = "所有文件|*.*";
-
             //还原当前目录
-
             openFileDialog.RestoreDirectory = true;
-
             //默认的文件格式
-
             openFileDialog.FilterIndex = 1;
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            Text1.Text = String.Empty;
+            panel1.Controls.Clear();
+            Myclass.suggestionline.Clear();
+            Myclass.thissubfile.Clear();
+            savefile.Visible = false;
 
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                
 
                 string path = openFileDialog.FileName;
+                Myclass.origionname = openFileDialog.SafeFileName;
                 Read1(path);
-
 
             }
 
 
 
-            ////选择文件夹
-
-            //FolderBrowserDialog dialog = new FolderBrowserDialog();
-
-            //dialog.Description = "请选择文件路径";
-
-            //if (dialog.ShowDialog() == DialogResult.OK)
-
-            //{
-
-            //    string foldPath = dialog.SelectedPath;
-
-            //    MessageBox.Show("已选择文件夹:" + foldPath, "选择文件夹提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            //}
+       
 
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void Output_click(object sender, EventArgs e)
         {
+            Linereplace();
 
+
+            SaveFileDialog savefile = new SaveFileDialog();
+            // set a default file name
+            savefile.FileName = "【修改】" + Myclass.origionname ;
+            // set filters - this can be done in properties as well
+            savefile.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+
+            if (savefile.ShowDialog() == DialogResult.OK)
+            {
+                using (StreamWriter sw = new StreamWriter(savefile.FileName))
+                {
+                    foreach (String s in Myclass.thissubfile)
+                        sw.WriteLine(s);
+                }
+            }
+
+        }
+
+        public void Linereplace()
+        {
+            int len1 = Myclass.suggestionline.Count();
+
+            for (int i = 0; i < len1; i++)
+            {
+                if (Myclass.suggestionline[i][1] == "true")
+                {
+                    int rownumber = Int32.Parse(Myclass.suggestionline[i][2]);
+                    Myclass.thissubfile[rownumber] = Myclass.suggestionline[i][0];
+                }
+
+
+            }
         }
     }
 }

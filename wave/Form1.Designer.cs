@@ -111,6 +111,7 @@
             this.savefile.TabIndex = 8;
             this.savefile.Text = "保存修改文件";
             this.savefile.UseVisualStyleBackColor = true;
+            this.savefile.Click += new System.EventHandler(this.Output_click);
             // 
             // Form1
             // 
@@ -132,7 +133,7 @@
             this.MinimumSize = new System.Drawing.Size(2400, 1130);
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.Text = "电波字幕组格式检查器2.0";
+            this.Text = "电波字幕组格式检查器3.0";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
